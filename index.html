@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stichting De Ambassade – Jaaroverzicht 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+    }
+  </style>
+</head>
+<body class="bg-stone-100 text-gray-900">
+
+<div id="root"></div>
+
+<script type="text/babel">
+const Card = ({ title, children, icon: Icon }) => (
+  <div className="bg-white border-t-4 border-amber-400 p-6 rounded-xl shadow-lg">
+    <div className="flex items-center gap-3 mb-6">
+      <div className="p-2 bg-emerald-50 rounded-lg text-emerald-900">
+        {Icon && <Icon />}
+      </div>
+      <h3 className="text-lg font-bold text-emerald-900 uppercase tracking-wider">{title}</h3>
+    </div>
+    {children}
+  </div>
+);
+
+const StatBox = ({ label, value, subtext, highlight = false }) => (
+  <div className={`text-center p-5 rounded-xl border ${highlight ? 'bg-emerald-900 text-white border-emerald-800' : 'bg-stone-50 border-stone-100 text-emerald-900'}`}>
+    <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${highlight ? 'text-emerald-200' : 'text-gray-500'}`}>{label}</p>
+    <p className="text-3xl font-black mb-1">{value}</p>
+    {subtext && <p className={`text-xs font-medium ${highlight ? 'text-emerald-300' : 'text-gray-400'}`}>{subtext}</p>}
+  </div>
+);
+
+// SVG Icons
+const IconShieldCheck = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+  </svg>
+);
+const IconUsers = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const IconMapPin = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const IconTrendingUp = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+    <polyline points="17 6 23 6 23 12" />
+  </svg>
+);
+const IconHeartPulse = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+  </svg>
+);
+const IconShoppingBag = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+  </svg>
+);
+const IconPrinter = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
+const App = () => {
+  return (
+    <div className="min-h-screen bg-stone-100 p-4 md:p-10 text-gray-900">
+
+      {/* Header */}
+      <header className="max-w-6xl mx-auto mb-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 border-b-2 border-amber-400 pb-8">
+        <div className="text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+            <span className="text-amber-500"><IconShieldCheck /></span>
+            <h1 className="text-4xl md:text-5xl font-black text-emerald-900 tracking-tighter">
+              STICHTING <span className="text-amber-500">DE AMBASSADE</span>
+            </h1>
+          </div>
+          <p className="text-lg text-emerald-800 font-bold tracking-widest uppercase">
+            Jaaroverzicht Klantgegevens 2025
+          </p>
+        </div>
+        <div className="flex gap-4">
+          <div className="text-right border-r border-gray-300 pr-4">
+            <p className="text-xs font-black text-emerald-900 uppercase tracking-widest">Rapportperiode</p>
+            <p className="text-sm font-bold text-gray-600">Januari – December 2025</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs font-black text-emerald-900 uppercase tracking-widest">Status</p>
+            <p className="text-sm font-bold text-emerald-600 flex items-center gap-1 justify-end">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span> Geverifieerd
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto space-y-8">
+
+        {/* KPI's */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatBox label="Totaal Leden" value="24.696" subtext="Actieve clubleden" highlight={true} />
+          <StatBox label="Nieuwe Leden" value="+ 5.877" subtext="Registraties in 2025" />
+          <StatBox label="Bezoeken" value="179.110" subtext="Jaarlijks volume" />
+          <StatBox label="Gem. Besteding" value="€ 22,61" subtext="Per transactie" />
+        </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+          {/* Links */}
+          <div className="lg:col-span-8 space-y-8">
+
+            <Card title="Demografische Spreiding" icon={IconUsers}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black text-gray-400 uppercase mb-4 tracking-widest">Leeftijdscategorieën</h4>
+                  {[
+                    { label: "18 - 25 jaar", val: 25.7, color: "bg-emerald-200" },
+                    { label: "26 - 35 jaar", val: 35.3, color: "bg-emerald-500" },
+                    { label: "36 - 45 jaar", val: 23.0, color: "bg-emerald-700" },
+                    { label: "46 - 55 jaar", val: 10.3, color: "bg-emerald-900" },
+                    { label: "56 - 65 jaar", val: 4.4,  color: "bg-amber-400" },
+                    { label: "65+ jaar",     val: 1.3,  color: "bg-amber-600" },
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      <div className="flex justify-between text-xs font-bold mb-1">
+                        <span>{item.label}</span><span>{item.val}%</span>
+                      </div>
+                      <div className="w-full bg-stone-100 rounded-full h-2 overflow-hidden border border-stone-200">
+                        <div className={`${item.color} h-full`} style={{ width: `${item.val}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col justify-between space-y-8">
+                  <div className="p-6 bg-emerald-900 text-white rounded-xl">
+                    <h4 className="text-xs font-bold text-emerald-300 uppercase mb-4 tracking-widest">Geslachtsverdeling</h4>
+                    <div className="flex items-center justify-around">
+                      <div className="text-center">
+                        <p className="text-4xl font-black">78,5%</p>
+                        <p className="text-xs uppercase font-bold text-emerald-300 tracking-widest">Man</p>
+                      </div>
+                      <div className="w-px h-16 bg-emerald-700"></div>
+                      <div className="text-center">
+                        <p className="text-4xl font-black text-amber-400">21,5%</p>
+                        <p className="text-xs uppercase font-bold text-emerald-300 tracking-widest">Vrouw</p>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Producten & Omzet" icon={IconShoppingBag}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-3">
+                  <h4 className="text-xs font-black text-gray-400 uppercase mb-4 tracking-widest">Populaire Producten (Top 5)</h4>
+                  {[
+                    { name: "Amnesia Haze",      val: 61902, unit: "st/gr" },
+                    { name: "Amnesia Tabak",      val: 35638, unit: "st" },
+                    { name: "Super Maroc Tabak",  val: 27886, unit: "st" },
+                    { name: "Turbo Maroc",        val: 23963, unit: "st" },
+                    { name: "Haze Mix Tabak",     val: 22086, unit: "st" },
+                  ].map((p, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 bg-stone-50 rounded-lg border-l-4 border-emerald-900">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-black text-emerald-900 bg-emerald-100 w-6 h-6 flex items-center justify-center rounded-full">{idx + 1}</span>
+                        <span className="text-sm font-bold text-emerald-900">{p.name}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-black text-gray-600">{p.val.toLocaleString('nl-NL')}</span>
+                        <span className="text-xs ml-1 text-gray-400 uppercase font-bold">{p.unit}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black text-gray-400 uppercase mb-4 tracking-widest">Omzet per Artikelgroep</h4>
+                  {[
+                    { label: "01. Weed",     pct: 53.7, color: "bg-emerald-900" },
+                    { label: "03. Joints",   pct: 25.5, color: "bg-emerald-600" },
+                    { label: "02. Hash",     pct: 11.1, color: "bg-amber-500" },
+                    { label: "05. Specials", pct: 5.5,  color: "bg-emerald-400" },
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      <div className="flex justify-between text-xs font-bold mb-1 uppercase text-gray-500">
+                        <span>{item.label}</span><span>{item.pct}%</span>
+                      </div>
+                      <div className="w-full bg-stone-100 rounded-full h-2">
+                        <div className={`${item.color} h-full rounded-full`} style={{ width: `${item.pct}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Rechts */}
+          <div className="lg:col-span-4 space-y-8">
+
+            <Card title="Lokaal Karakter" icon={IconMapPin}>
+              <p className="text-xs text-gray-500 mb-6 italic leading-relaxed">
+                Stichting De Ambassade vervult een duidelijke regiofunctie voor Zwijndrecht en omliggende Drechtsteden.
+              </p>
+              <div className="space-y-4">
+                {[
+                  { city: "Zwijndrecht",  pct: 28.38 },
+                  { city: "Dordrecht",    pct: 11.95 },
+                  { city: "Rotterdam",    pct: 7.30 },
+                  { city: "H.I. Ambacht", pct: 7.18 },
+                  { city: "Ridderkerk",   pct: 5.20 },
+                ].map((loc, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-12 text-right text-xs font-black text-emerald-900">{loc.pct}%</div>
+                    <div className="flex-1 h-3 bg-stone-100 rounded-full overflow-hidden border border-stone-200">
+                      <div className="h-full bg-emerald-800" style={{ width: `${(loc.pct / 28.38) * 100}%` }}></div>
+                    </div>
+                    <div className="text-xs font-bold w-24 text-gray-600 truncate uppercase tracking-tighter">{loc.city}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <div className="bg-emerald-950 text-white rounded-xl shadow-xl border-b-8 border-amber-400 p-8 flex flex-col justify-between" style={{minHeight: '400px'}}>
+              <div>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2 bg-emerald-900 rounded-lg text-amber-400">
+                    <IconHeartPulse />
+                  </div>
+                  <h3 className="text-xl font-bold uppercase tracking-wider">Medicinale Focus</h3>
+                </div>
+                <div className="space-y-8">
+                  <div>
+                    <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Aandeel Gebruikers</p>
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-5xl font-black">0,43%</p>
+                      <p className="text-xs text-emerald-500 font-bold uppercase italic">v/d Leden</p>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-emerald-900 p-4 rounded-xl border border-emerald-800" style={{backgroundColor:'rgba(6,78,59,0.5)'}}>
+                      <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1">Gemiddelde Leeftijd</p>
+                      <p className="text-3xl font-black text-amber-400">47 jaar</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-emerald-800" style={{backgroundColor:'rgba(6,78,59,0.5)'}}>
+                      <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1">Besteding per Bezoek</p>
+                      <p className="text-3xl font-black text-amber-400">€ 28,18</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-8 pt-6 border-t border-emerald-900">
+                <p className="text-xs text-emerald-200 leading-relaxed italic opacity-80">
+                  "Medicinale gebruikers tonen een hogere loyaliteit en specifiek aankoopgedrag."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Verantwoording */}
+        <section className="bg-white p-8 rounded-xl shadow-sm border border-stone-200 flex flex-col md:flex-row gap-8 items-center">
+          <div className="bg-emerald-50 p-4 rounded-full text-emerald-900">
+            <IconShieldCheck />
+          </div>
+          <div className="flex-1 text-center md:text-left">
+            <h4 className="text-sm font-black text-emerald-900 uppercase tracking-widest mb-2">Transparantie & Verantwoording</h4>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Dit jaarverslag biedt inzicht in de statistieken van Stichting De Ambassade over 2025.
+              Alle dataverwerking geschiedt volgens AVG-richtlijnen en dient ter maatschappelijke verantwoording.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="max-w-6xl mx-auto mt-16 pt-8 border-t border-stone-200 text-center">
+        <div className="text-xs font-black text-stone-400 uppercase tracking-widest">
+          Stichting De Ambassade • Zwijndrecht • 2026
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
